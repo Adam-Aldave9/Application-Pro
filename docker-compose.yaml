@@ -1,0 +1,14 @@
+version: '3'
+services:
+  frontend:
+    build: ./job-application-tracker
+    ports:
+     - "3000:3000"
+  backend:
+    build: ./Backend
+    environment:
+      - MONGODB_URL=<Enter mongodb connection key here>
+    ports:
+      - "5000:5000"
+
+

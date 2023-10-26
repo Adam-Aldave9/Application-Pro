@@ -1,0 +1,51 @@
+@font-face {
+    font-family: circularMain;
+    src: url('./Circular/Circular/CircularStd-Bold.otf') format('truetype');
+    font-weight: 100;
+}
+
+@font-face {
+    font-family: circularSecond;
+    src: url('./Circular/Circular/CircularStd-Medium.otf') format('truetype');
+    font-weight: 100;
+}
+
+
+:root{
+    --ff-prim: circularMain;
+    --ff-sec: circularSecond;
+    --color-primary: #1E52F3;
+    --color-secondary: #252526;
+    --color-third: #645bff;
+    --color-support: #FFFFFF
+}
+
+.wrapper{
+    background-color: var(--color-primary);
+    height: 7.5vh;
+    
+}
+
+nav{
+    display: inline-block;
+    position: relative;
+    top: 20%;
+    font-family: var(--ff-prim);
+    font-size: 2rem;
+    color: black;
+    padding-left: 1.2rem;
+    padding-top: 0.2rem;
+}
+
+.out{
+    position: relative;
+    top: 30%;
+    font-family: var(--ff-prim);
+    font-size: 1rem;
+    color: var(--color-secondary);
+    padding-left: 1.2rem;
+    padding-top: 0.2rem;
+    right: 2vw;
+    float: right;
+    text-decoration: none;
+}

@@ -1,0 +1,89 @@
+@font-face {
+    font-family: circularMain;
+    src: url('./Circular/Circular/CircularStd-Bold.otf') format('truetype');
+    font-weight: 100;
+}
+
+@font-face {
+    font-family: circularSecond;
+    src: url('./Circular/Circular/CircularStd-Medium.otf') format('truetype');
+    font-weight: 100;
+}
+
+
+:root{
+    --ff-prim: circularMain;
+    --ff-sec: circularSecond;
+    --color-primary: #1E52F3;
+    --color-secondary: #252526;
+    --color-third: #645bff;
+    --color-support: #FFFFFF;
+}
+
+.bg{
+    color: orange;
+    background-color: #08194c;
+    height: 100vh;
+    margin: 0px;
+}
+
+.board-header{
+    display: flex;
+}
+
+.board-header div{
+    width: 25%;
+    text-align: center;
+    border: solid 2px red
+}
+
+.to-create{
+   color: black;
+   float: right;
+   height: 1.4rem;
+   width: 6rem;
+   border: solid #645bff 2px;
+   border-radius: 0rem;
+   background-color: #645bff;
+   text-decoration: none;
+   text-align: center;
+}
+
+.board-primary{
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-rows: 9rem;
+    grid-gap:0.75rem;
+}
+
+.item{
+    text-align: center;
+    width: 19vw;
+    border: solid white 4px;
+    margin-top: 0.5rem;
+    background-color: var(--color-primary);
+    display: inline-block;
+    align-items: center;
+    position: relative;
+}
+
+.ticket-column{
+    display: grid;
+    grid-template-columns: 25%;
+    grid-auto-rows: 9rem;
+    grid-gap:0.75rem;
+}
+
+.to-edit{
+    color: black;
+    float: right;
+    height: 1.4rem;
+    width: 6rem;
+    border: solid #645bff 2px;
+    border-radius: 0rem;
+    background-color: #645bff;
+    text-decoration: none;
+    text-align: center;
+    
+ }
+ 
