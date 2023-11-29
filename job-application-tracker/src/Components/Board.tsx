@@ -21,7 +21,7 @@ function Board(){
             title: "",
             status: "",
             description: "",
-            resume: 0
+            resume: ""
         }]
     })
 
