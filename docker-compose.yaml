@@ -1,7 +1,7 @@
 version: '3'
 services:
   frontend:
-    build: ./job-application-tracker
+    build: ./kanban-board
     ports:
       - "3000:3000" 
 
