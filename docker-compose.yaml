@@ -8,7 +8,13 @@ services:
   backend:
     build: ./Backend
     environment:
-      - MONGODB_URL=mongodb+srv://adamaldv9:H0mLoBR8olJ3bQRw@cluster0.f3shxwg.mongodb.net/Database1?retryWrites=true&w=majority
+      - MONGODB_URL=<Your MongoDB Connection Key>
+      # AWS Config Details for S3
+      - AWS_APIVERSION=<AWS API Version>
+      - AWS_ACCESSKEYID=<Your AWS Access Key ID>
+      - AWS_SECRETACCESSKEY=<Your AWS Secret Access Key>
+      - AWS_REGION=<Your AWS Region>
+      - AWS_SIGNATUREVERSION=<Your AWS Signature Version>
     ports:
       - "5000:5000" 
 

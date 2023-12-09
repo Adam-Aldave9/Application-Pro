@@ -45,7 +45,6 @@ function CreateJob(){
         try{
             
             const {data} = await axios.get(`http://localhost:5000/users/presignedResume/${params.id}/${filename}`)
-            console.log(data)
             const { uploadUrl, key } = data;
     
             await axios.put(uploadUrl, file);
@@ -57,7 +56,6 @@ function CreateJob(){
     async function submitApplication(e: React.FormEvent<HTMLFormElement>){
         e.preventDefault()
         await resumeSubmit(e)
-        console.log(payload)
         axios.put(`http://localhost:5000/users/add/${params.id}`, {payload})
         .then(() => {
             console.log("success")

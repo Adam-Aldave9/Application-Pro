@@ -86,4 +86,17 @@
     text-align: center;
     
  }
+
+ .download-link{
+    text-decoration: none;
+    color: black;
+    font-size: 1.2rem;
+    border: 0.2rem solid purple;
+ }
  
+ .edit-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+ }

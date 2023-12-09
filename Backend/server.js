@@ -1,29 +1,29 @@
-const express = require("express"); //our expres object
-const cors = require("cors"); //our cors object
-const mongoose = require("mongoose"); //our mongoose obj
+const express = require("express"); 
+const cors = require("cors"); 
+const mongoose = require("mongoose"); 
 
-require("dotenv").config(); // load env vars and call by process.env obj
+require("dotenv").config(); 
 
 //create express server
 const app = express(); //create express object
 const port = 5000; //port for server
 
 //**************************
-app.use(cors()); //configure cors in middleware for security purposes
-app.use(express.json()); //will allow app obj to parse json data
+app.use(cors()); 
+app.use(express.json()); 
 
 //**************************
 const uri = process.env.MONGODB_URL; //load mongodb connection key 
 mongoose.set("strictQuery", true); //ensure queries follow the correspondng schema
-mongoose.connect(uri); //establish connection
+mongoose.connect(uri); 
 
-const connect = mongoose.connection; //connection obbject
+const connect = mongoose.connection; 
 connect.once("open", () => {console.log("Successfully Established MongoDB connection")});
 
 const userRouter = require("./Routes/Users.js");
-//insert any middleware between connect and listen
+
 app.use("/users", userRouter)
 
-app.listen(port, () =>{ //start your server
+app.listen(port, () =>{ 
     console.log(`running on port ${port}`);
 })
