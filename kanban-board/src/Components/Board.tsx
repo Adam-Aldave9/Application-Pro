@@ -21,22 +21,46 @@ function Board(){
             title: "",
             status: "",
             description: "",
-            resume: 0
+            resume: ""
         }]
     })
 
     const [rerender, setRerender] = useState("Loading")
+    const [isDocLoaded, setIsDocLoaded] = useState(false)
+    const [finalLoad, setFinalLoad] = useState(false)
+
     useEffect(() =>{ //get user document and load jobs to state
-        fetchData()
-    }, [])
+        if(isDocLoaded === false) fetchData()
+        else if (rerender === "Loading") {
+            loadResumeURLs()
+        }
+    }, [isDocLoaded, rerender])
+    
+    
 
     async function fetchData(){
         const id = params.id
         await axios.get(`http://localhost:5000/users/${id}`) //returns a single object in this case. Not wrapped in array
         .then(res => {
             setDoc(res.data)
-            setRerender("Loaded")
+            setIsDocLoaded(true) 
         })
+        .catch(e => console.log("error is"+e))
+    }
+
+    async function loadResumeURLs(){
+        const id = params.id
+        doc.jobs.map((document, index) => {
+            console.log("The current document resume is "+document.resume)
+            axios.get(`http://localhost:5000/users/getPresignedResumeDownload/${id}/${document.resume}`)
+            .then((url) => {
+                const downloadURL = url.data.uploadUrl
+                doc.jobs[index].resume = downloadURL
+                if(index === doc.jobs.length - 1) setFinalLoad(true)
+            })
+            .catch(error => console.log("load resume url error is "+error))
+        })
+        setRerender("Loaded") 
     }
     /**********************************************/
 
@@ -63,8 +87,9 @@ function Board(){
 
     function jobsResult(){
         return doc.jobs.map((document, index) => {
-            if(document.status === "Result")
+            if(document.status === "Result"){
                 return <Document company={document.company} title={document.title} description={document.description} resume={document.resume} idx={index}></Document>
+            }
         })
     }
 
@@ -74,8 +99,8 @@ function Board(){
                 <h2>{props.company}</h2>
                 <div>Title: {props.title}</div>
                 <p>{props.description}</p>
-                <div>Resume: {props.resume}</div>
-                <div><Link className="to-edit" to={`/edit/${params.id}/${props.idx}`}>{"Edit"}</Link></div>
+                <a className="download-link" href={props.resume}>View Resume </a>
+                <div className="edit-button"><Link className="to-edit" to={`/edit/${params.id}/${props.idx}`}>{"Edit"}</Link></div>
             </div>
             
         )
@@ -93,12 +118,14 @@ function Board(){
                     <div>Interview</div>
                     <div>Result</div>
                 </section>
+                {finalLoad === false ? (<h1></h1>) : (
                 <section className="board-primary">
                     <div className="ticket-columns">{jobsToDo()}</div>
                     <div className="ticket-columns">{jobsWaiting()}</div>
                     <div className="ticket-columns">{jobsInterview()}</div>
                     <div className="ticket-columns">{jobsResult()}</div>
                 </section>
+                )}
             </div>
             )}
         </div>

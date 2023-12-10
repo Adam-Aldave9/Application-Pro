@@ -13,13 +13,13 @@ function EditJob(){
         title: string,
         status: string,
         description: string,
-        resume: number
+        resume: string
     }
     
     const params = useParams()
-    const [data, setData] = useState<Job>({company:"",title:"",status:"",description:"", resume:0})
-    //good use of api call on render
-    //only runs on first render
+    const [data, setData] = useState<Job>({company:"",title:"",status:"",description:"", resume:""})
+    const [oldResume, setOldResume] = useState("")
+  
     useEffect(() => {
         getUser()
     }, [])
@@ -30,6 +30,7 @@ function EditJob(){
             let number = Number(params.index)
             let user = res.data.jobs[number]
             setData(user)
+            setOldResume(user.resume)
         })
         .catch((e) => console.log("Error "+e))
     }
@@ -51,12 +52,43 @@ function EditJob(){
     }
 
     function onChangeResume(e: React.ChangeEvent<HTMLInputElement>){
-        setData({...data, resume: Number(e.target.value)})
+        if(e.target.files === null) return 
+        setData({...data, resume: e.target.files[0].name})
     }
 
+    async function resumeSubmitEdit(target: React.FormEvent<HTMLFormElement> ){
+        const formData = new FormData(target.currentTarget)
+        const file = formData.get("file_")
+        if(file === null) return null
+        else await deleteResume("update")
+        const filename = data.resume
+        try{
+            
+            const {data} = await axios.get(`http://localhost:5000/users/presignedResume/${params.id}/${filename}`)
+            console.log(data)
+            const { uploadUrl, key } = data;
+    
+            await axios.put(uploadUrl, file);
+            return key;
+        }
+        catch(e){console.log("Resume upload error is "+e)}
+    }
+
+    // delete resume file
+    //when full job deletion or resume is update and need to delete old one
+    async function deleteResume(deleteType : string){
+        let filename = ""
+        if(deleteType === "delete"){
+            filename = data.resume
+        }
+        else if(deleteType === "update") filename = oldResume
+        await axios.delete(`http://localhost:5000/users/deleteResume/${params.id}/${filename}`)
+    }
     //update append to specified users jobs array
-    function submitApplication(e: React.MouseEvent<HTMLButtonElement, MouseEvent>){
+    async function submitApplicationEdit(e: React.FormEvent<HTMLFormElement>){
         e.preventDefault()
+        await resumeSubmitEdit(e)
+        console.log(data)
         axios.put(`http://localhost:5000/users/update/${params.id}/${params.index}`, {data})
         .then(() => {
             console.log("success")
@@ -65,8 +97,9 @@ function EditJob(){
         .catch(e => console.log("Error "+e))
     }
 
-    function deleteJob(e: React.MouseEvent<HTMLButtonElement, MouseEvent>){
+    async function deleteJob(e: React.MouseEvent<HTMLButtonElement, MouseEvent>){
         e.preventDefault()
+        await deleteResume("delete")
         axios.delete(`http://localhost:5000/users/delete/${params.id}/${params.index}`)
         .then(() => {
             console.log("Deletion success")
@@ -78,7 +111,7 @@ function EditJob(){
     return (
         <div className="background">
             <Navbar></Navbar>
-            <form className="form">
+            <form className="form" onSubmit={submitApplicationEdit}>
                 <div><Link to={`/board/${params.id}`} className="back">{"< "}Back</Link></div>
                 <p className="title">Edit Application</p>
                 <label>
@@ -95,7 +128,7 @@ function EditJob(){
                 </label> 
         
                 <label>
-                    <span>Status (Backlog/Waiting/Interview/Result)</span>
+                    <span>Status (Waiting/Interview/Result)</span>
                     <input  value={data.status} required placeholder="" onChange={onChangeStatus} type="text" className="input"/>
 
                 </label>
@@ -105,9 +138,9 @@ function EditJob(){
                 </label>
                 <label>
                     <span>Resume</span>
-                    <input type="file"/>
+                    <input type="file" accept="application/pdf" name="file_" onChange={onChangeResume}/>
                 </label>
-                <button className="submit" onClick={submitApplication}>Edit</button>
+                <button className="submit" type="submit">Edit</button>
                 <button className="submit" onClick={deleteJob}>Delete Application</button>
             </form>
         </div>

@@ -1,14 +1,21 @@
 version: '3'
 services:
   frontend:
-    build: ./job-application-tracker
+    build: ./kanban-board
     ports:
-     - "3000:3000"
+      - "3000:3000" 
+
   backend:
     build: ./Backend
     environment:
-      - MONGODB_URL=<Enter mongodb connection key here>
+      - MONGODB_URL=<Your MongoDB Connection Key>
+      # AWS Config Details for S3
+      - AWS_APIVERSION=<AWS API Version>
+      - AWS_ACCESSKEYID=<Your AWS Access Key ID>
+      - AWS_SECRETACCESSKEY=<Your AWS Secret Access Key>
+      - AWS_REGION=<Your AWS Region>
+      - AWS_SIGNATUREVERSION=<Your AWS Signature Version>
+      - AWS_BUCKET_NAME=<YOUR AWS S3 BUCKET NAME>
     ports:
-      - "5000:5000"
-
+      - "5000:5000" 
 

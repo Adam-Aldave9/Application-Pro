@@ -15,6 +15,7 @@
 # sensitive info
 /Backend/.env
 MongoDB-Info.txt
+secrets.txt
 
 # misc
 .DS_Store
