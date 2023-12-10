@@ -15,6 +15,7 @@ services:
       - AWS_SECRETACCESSKEY=<Your AWS Secret Access Key>
       - AWS_REGION=<Your AWS Region>
       - AWS_SIGNATUREVERSION=<Your AWS Signature Version>
+      - AWS_BUCKET_NAME=<YOUR AWS S3 BUCKET NAME>
     ports:
       - "5000:5000" 
 

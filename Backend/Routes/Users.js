@@ -20,7 +20,7 @@ router.route("/presignedResume/:id/:filename").get((req, res) => {
     const Key = `${req.params.id}/${req.params.filename}`;
 
     const s3Params = {
-        Bucket: "resumes-jat",
+        Bucket: process.env.AWS_BUCKET_NAME,
         Key,
         Expires: 60,
         ContentType: `application/pdf`,
@@ -35,7 +35,7 @@ router.route("/getPresignedResumeDownload/:id/:filename").get((req, res) => {
     const Key = `${req.params.id}/${req.params.filename}`;
 
     const s3Params = {
-        Bucket: "resumes-jat",
+        Bucket: process.env.AWS_BUCKET_NAME,
         Key,
         Expires: 7200
     };
@@ -49,7 +49,7 @@ router.route("/getPresignedResumeDownload/:id/:filename").get((req, res) => {
 router.route("/deleteResume/:id/:filename").delete((req, res) => {
     const Key = `${req.params.id}/${req.params.filename}`;
     const params = {
-        Bucket: "resumes-jat",
+        Bucket: process.env.AWS_BUCKET_NAME,
         Key
     }
     s3.deleteObject(params, (err, data) => {
