@@ -16,7 +16,7 @@ function EditJob(){
         resume: string
     }
     
-    const params = useParams()
+    const params = useParams<{id: string, index: string}>()
     const [data, setData] = useState<Job>({company:"",title:"",status:"",description:"", resume:""})
     const [oldResume, setOldResume] = useState("")
   
@@ -24,8 +24,8 @@ function EditJob(){
         getUser()
     }, [])
 
-    async function getUser(){
-        await axios.get(`http://localhost:5000/users/${params.id}`)
+    function getUser(){
+        axios.get(`http://localhost:5000/users/${params.id}`)
         .then(res => {
             let number = Number(params.index)
             let user = res.data.jobs[number]
@@ -110,7 +110,7 @@ function EditJob(){
 
     return (
         <div className="background">
-            <Navbar></Navbar>
+            <Navbar link=""></Navbar>
             <form className="form" onSubmit={submitApplicationEdit}>
                 <div><Link to={`/board/${params.id}`} className="back">{"< "}Back</Link></div>
                 <p className="title">Edit Application</p>

@@ -14,7 +14,7 @@ function CreateJob(){
         resume: string
     }
     
-    const params = useParams()
+    const params = useParams<{id: string}>()
     const [payload, setpayload] = useState<Job>({company:"",title:"",status:"",description:"", resume:""})
     
     function onChangeCompany(e: React.ChangeEvent<HTMLInputElement>){
@@ -66,7 +66,7 @@ function CreateJob(){
 
     return (
         <div className="background">
-            <Navbar></Navbar>
+            <Navbar link=""></Navbar>
             <form className="form" onSubmit={submitApplication}>
                 <div><Link to={`/board/${params.id}`} className="back">{"< "}Back</Link></div>
                 <p className="title">Create Application</p>
