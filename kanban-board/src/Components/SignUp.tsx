@@ -4,7 +4,7 @@ import axios from "axios";
 import {Link} from "react-router-dom"
 import "../Styles/login.css"
 
-function SignUp(){
+function SignUp(): JSX.Element{
     const [newUser, setNewUser] = useState({
         username: "",
         password: ""
@@ -12,21 +12,21 @@ function SignUp(){
 
     const [exists, setExists] = useState("")
 
-    function onChangeUsername(e: React.ChangeEvent<HTMLInputElement>){
+    function onChangeUsername(e: React.ChangeEvent<HTMLInputElement>): void{
         setNewUser({
             ...newUser,
             username: e.target.value
         })
     }
 
-    function onChangePassword(e: React.ChangeEvent<HTMLInputElement>){
+    function onChangePassword(e: React.ChangeEvent<HTMLInputElement>): void{
         setNewUser({
             ...newUser,
             password: e.target.value
         })
     }
 
-    function signUp(){
+    function signUp(): void{
         axios.post("http://localhost:5000/users/createuser", newUser)
         .then(res => {
             console.log(res.data); 

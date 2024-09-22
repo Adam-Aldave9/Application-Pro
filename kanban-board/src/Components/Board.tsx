@@ -7,11 +7,26 @@ import {Link} from "react-router-dom"
 import Navbar from "./Navbar";
 import "../Styles/board.css"
 /*
-Should display all user jobs which includes the details of each job
+Display all user jobs which includes the details of each job
 */
-function Board(){
-    /*************************DONT TOUCH THIS**************************** */
-    const params = useParams()
+function Board(): JSX.Element{
+    interface Document{
+        company: string,
+        title: string,
+        idx: number,
+        description: string,
+        resume: string
+    }
+
+    interface Job{
+        company: string,
+        title: string,
+        status: string,
+        description: string,
+        resume: string
+    }
+
+    const params = useParams<{id: string}>()
     const [doc, setDoc] = useState({
         _id: "",
         username: "",
@@ -38,9 +53,9 @@ function Board(){
     
     
 
-    async function fetchData(){
+    function fetchData(): void{
         const id = params.id
-        await axios.get(`http://localhost:5000/users/${id}`) //returns a single object in this case. Not wrapped in array
+        axios.get(`http://localhost:5000/users/${id}`) //returns a single object in this case. Not wrapped in array
         .then(res => {
             setDoc(res.data)
             setIsDocLoaded(true) 
@@ -48,9 +63,9 @@ function Board(){
         .catch(e => console.log("error is"+e))
     }
 
-    async function loadResumeURLs(){
+    function loadResumeURLs(): void{
         const id = params.id
-        doc.jobs.map((document, index) => {
+        doc.jobs.map((document: Job, index: number) => {
             console.log("The current document resume is "+document.resume)
             axios.get(`http://localhost:5000/users/getPresignedResumeDownload/${id}/${document.resume}`)
             .then((url) => {
@@ -62,38 +77,37 @@ function Board(){
         })
         setRerender("Loaded") 
     }
-    /**********************************************/
 
-    function jobsToDo(){//will return table of jobs
-        return doc.jobs.map((document, index) => {
+    function jobsToDo(): (JSX.Element | undefined)[] {//will return table of jobs
+        return doc.jobs.map((document: Job, index: number) => {
             if(document.status === "To Do")
                 return <Document company={document.company} title={document.title} description={document.description} resume={document.resume} idx={index}></Document>
         })
     }
 
-    function jobsWaiting(){
-        return doc.jobs.map((document, index) => {
+    function jobsWaiting(): (JSX.Element | undefined)[] {
+        return doc.jobs.map((document: Job, index: number)=> {
             if(document.status === "Waiting")
                 return <Document company={document.company} title={document.title} description={document.description} resume={document.resume} idx={index}></Document>
         })
     }
 
-    function jobsInterview(){
-        return doc.jobs.map((document, index) => {
+    function jobsInterview(): (JSX.Element | undefined)[] {
+        return doc.jobs.map((document: Job, index: number) => {
             if(document.status === "Interview")
                 return <Document company={document.company} title={document.title} description={document.description} resume={document.resume} idx={index}></Document>
         })
     }
 
-    function jobsResult(){
-        return doc.jobs.map((document, index) => {
+    function jobsResult(): (JSX.Element | undefined)[] {
+        return doc.jobs.map((document: Job, index: number) => {
             if(document.status === "Result"){
                 return <Document company={document.company} title={document.title} description={document.description} resume={document.resume} idx={index}></Document>
             }
         })
     }
 
-    function Document(props:any){
+    function Document(props: Document): JSX.Element{
         return(
             <div className="item">
                 <h2>{props.company}</h2>
